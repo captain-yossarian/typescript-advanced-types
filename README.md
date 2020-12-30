@@ -8,7 +8,7 @@
 
 [4. React, return component type](#4react-component-return-type---link)
 
-[5.](#5compare-arguments-in-typescript---link)
+[5. Compare arguments](#5compare-arguments-in-typescript---link)
 
 ## 1.Generic class for API requests
 
