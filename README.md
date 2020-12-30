@@ -1270,6 +1270,7 @@ It is mean, that if list has not neither Head nor Tail - return empty array.
 I used empty array here instead of never, because we want to filter an array, not to get either Head or Tail
 
 Is it possible to reuse above pattern for other cases ? Sure!
+
 Take a look on this [question](https://stackoverflow.com/questions/65476787/how-to-dynamically-create-an-object-based-on-a-readonly-tuple-in-typescript/65478618#65478618)
 
 Let's say you have an array and you want to map it to other array. How to do it with type system?
