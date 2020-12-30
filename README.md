@@ -1,6 +1,8 @@
 # typescript-advanced-types
 
-[Return](#4react-component-return-type---link)
+[1. Generic class for API requests](#1generic-class-for-api-requests)
+
+[4. React, return component type](#4react-component-return-type---link)
 
 ## 1.Generic class for API requests
 
