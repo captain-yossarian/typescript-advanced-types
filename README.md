@@ -14,6 +14,8 @@
 
 [8. Constraints are matter](#8-constraints-are-matter)
 
+[9. Recursive types](#9-recursive-types)
+
 ## 1.Generic class for API requests
 
 Let's assume that we have next allowed endpoints:
