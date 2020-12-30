@@ -1,9 +1,10 @@
 # typescript-advanced-types
 
-[1. Generic class for API requests](#1generic-class-for-api-requests)
-[2. Math operations](#2math-operations)
+[1. Generic class for API requests](#1generic-class-for-api-requests---link)
 
-[4. React, return component type](#4react-component-return-type)
+[2. Math operations](#2math-operations---link)
+
+[4. React, return component type](#4react-component-return-type---link)
 
 ## 1.Generic class for API requests
 
