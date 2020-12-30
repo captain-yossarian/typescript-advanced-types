@@ -937,3 +937,5 @@ type Result = Values<Omit<FindIndex<Arr, 65>, ArrayKeys>> // '1'
 ```
 Is second example it useful in practive? Of course not) Will it help you to understand better TS type system? - Definitely
 [Here](https://stackoverflow.com/questions/65429424/need-help-in-understanding-confusing-typescript-function) you can find very interesting example with typeguards: 
+
+## 11. Handle tuples - [link](https://stackoverflow.com/questions/65466617/typescript-filter-out-rest-parameter)
