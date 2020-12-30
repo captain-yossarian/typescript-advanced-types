@@ -1,5 +1,7 @@
 # typescript-advanced-types
 
+[Return](#4react-component-return-type---link)
+
 ## 1.Generic class for API requests
 
 Let's assume that we have next allowed endpoints:
