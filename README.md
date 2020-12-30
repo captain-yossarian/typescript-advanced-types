@@ -868,3 +868,27 @@ const colorsLiteral2 = makeStringArray([1,2,3]); // type ("red" | "green" | "blu
 ```
 Now, your types are more helpful. 
 
+## 9. Recursive types - [link1](https://stackoverflow.com/questions/64899511/deepexclude-type-for-typescript), [link2](https://stackoverflow.com/questions/65503728/defining-a-type-for-this-function-that-works-on-arbitrary-length-tuples)
+
+SImple example:
+```typescript
+type Immutable<T> = { readonly [K in keyof T]: Immutable<T[K]>; }
+
+function foo<T>(t: T): Immutable<T> {
+   return t
+}
+
+const result1 = foo({ age: { name: 'John' } }) // { readonly age: { name: string }; }
+```
+Make all properties immutable except name children
+```typescript
+type Immutable<T> = { readonly [K in keyof T]: K extends 'name' ? T[K] : Immutable<T[K]>; }
+
+function foo<T>(t: T): Immutable<T> {
+    return t as any as Immutable<T>
+}
+
+const result1 = foo({ age: { name: { surname: 'Doe' } } })
+result1.age.name = '2' // error
+result1.age.name.surname = '2' // ok
+```
