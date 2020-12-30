@@ -1,7 +1,8 @@
 # typescript-advanced-types
 
 [Help](##1.Generic class for API requests)
-[Link](##1)
+
+[Link](## 3)
 
 ##1.Generic class for API requests
 
