@@ -4,6 +4,8 @@
 
 [2. Math operations](#2math-operations---link)
 
+[3. Typed React children](#3typed-react-children---link)
+
 [4. React, return component type](#4react-component-return-type---link)
 
 ## 1.Generic class for API requests
