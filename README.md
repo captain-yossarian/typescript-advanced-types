@@ -16,7 +16,7 @@
 
 [9. Recursive types](#9-recursive-types---link1-link2)
 
-[10. Typeguards]
+[10. Typeguards](#10-typeguards---link)
 
 ## 1.Generic class for API requests
 
