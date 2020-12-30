@@ -74,3 +74,20 @@ We have class Api and overloadings for function. How we can combine them? Very s
 ```typescript
 const handleHttp: HandleHttp = <_ extends Endpoints>() => new Api();
 ```
+Take a look on generic parameter of httpHandler and HandleHttp interface, there is a relation between them.
+Let's test our result:
+```typescript
+const request1 = handleHttp<Endpoints.notes>() // only delete and post methods are allowed
+const request2 = handleHttp<Endpoints.users>() // only get and post methods are allowed
+const request3 = handleHttp<Endpoints.entitlements>() // only get method is allowed
+```
+If you have forgotten to provide generic parameter, return type of `request` will be
+```typescript
+const request = {
+    __TYPE__ERROR__: 'Please provide generic parameter';
+}
+```
+
+Drawbacks:
+ - Without generic parameter, using `request.TYPE _ERROR` will be perfectly valid from TS point of view
+ - `Api` class is not singleton, you should create it every time
