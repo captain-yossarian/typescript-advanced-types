@@ -16,6 +16,8 @@
 
 [9. Recursive types](#9-recursive-types---link1-link2)
 
+[10. Typeguards]
+
 ## 1.Generic class for API requests
 
 Let's assume that we have next allowed endpoints:
@@ -894,3 +896,44 @@ const result1 = foo({ age: { name: { surname: 'Doe' } } })
 result1.age.name = '2' // error
 result1.age.name.surname = '2' // ok
 ```
+## 10. Typeguards - [link](https://stackoverflow.com/questions/65429424/need-help-in-understanding-confusing-typescript-function)
+
+I'd willing to bet you are using Array.prototype.filter 1 hundred times per day. And I bet you want to do it like a PRO. I have found this example in this [book](https://typescriptnapowaznie.pl/)
+Let's say you have an array, and you want to get rid of 4s and 9s
+
+```typescript
+const arr = [85, 65, 4, 9] as const
+type Arr = typeof arr;
+
+/**
+ * Naive approach
+ */
+const result_naive = arr.filter(
+    (elem) => elem !== 4 && elem !== 9
+) // (85 | 65 | 4 | 9)[]
+```
+You still have 4 | 9 in your union type. This is not what we expected.
+Here is much better approach:
+```typescript
+type Without_4_and_9 = Exclude<Arr[number], 4 | 9>
+const result = arr.filter(
+    (elem): elem is Without_4_and_9 => elem !== 4 && elem !== 9
+) // (85 | 65)[]
+```
+By using simple utility types, we can emulate JS Array.prototype.findIndex
+```typescript
+const arr = [85, 65, 4, 9] as const
+type Arr = typeof arr;
+
+type Values<T> = T[keyof T]
+
+type ArrayKeys = keyof []
+
+type FindIndex<T extends ReadonlyArray<number>, Value extends number = 0, Keys extends keyof T = keyof T> = {
+    [P in Keys]: Value extends T[P] ? P : never
+}
+
+type Result = Values<Omit<FindIndex<Arr, 65>, ArrayKeys>> // '1'
+```
+Is second example it useful in practive? Of course not) Will it help you to understand better TS type system? - Definitely
+[Here](https://stackoverflow.com/questions/65429424/need-help-in-understanding-confusing-typescript-function) you can find very interesting example with typeguards: 
