@@ -939,3 +939,79 @@ Is second example it useful in practive? Of course not) Will it help you to unde
 [Here](https://stackoverflow.com/questions/65429424/need-help-in-understanding-confusing-typescript-function) you can find very interesting example with typeguards: 
 
 ## 11. Handle tuples - [link](https://stackoverflow.com/questions/65466617/typescript-filter-out-rest-parameter)
+Let's say you have a literal type of array and you want to filter this type
+```typescript
+/**
+ * We should get rid of all numbers
+ */
+type Arr = [number, string, ...number[]];
+
+type Filter<T, U>= // @todo
+
+type Test0 = Filter<[], number>; // []
+type Test1 = Filter<Arr, number>; // [string, ...number[]]
+type Test2 = Filter<Arr, number[]>; // [number, string]
+
+type Test3 = Filter<Arr, number | number[]>; // [string]
+type Test4 = Filter<Arr, number | number[] | string>; // []
+```
+First of all, we should handle all possible cases. What if first generic parameter of Filter is empty array?
+```typescript
+type Filter<T extends any[], F> = T extends [] ? []: T //
+
+type Test0 = Filter<[], number>; // []
+```
+Before, we continue, make sure you are aware of some basics of functional programming lists operations.Each list has Head - the first element and Tail - all elements but first. To iterate recursively through the tuple, we should every time receive the head of list and the tail.
+```typescript
+type Head<T extends ReadonlyArray<unknown>> = 
+  T extends readonly [infer H, ... infer Tail] ? H : never
+
+{
+    type Test1 = Assert<Head<[1, 2, 3]>, 1>
+    type Test2 = Assert<Head<['head', 'tail']>, 'head'>
+    type Test3 = Assert<Head<[]>, never>
+}
+
+type Tail<List extends ReadonlyArray<unknown>> = 
+  List extends readonly [infer H, ... infer Tail] ? Tail : never
+
+{
+    type Test1 = Assert<Tail<[1, 2, 3]>, [2,3]>
+    type Test2 = Assert<Tail<['head', 'tail']>, ['tail']>
+    type Test3 = Assert<Head<[]>, never>
+}
+```
+Very straightforward. I hope you have noticed, that in case of empty list, I returned never, because empty list has not neither head nor tail
+Now, we can define our recursive type:
+```typescript
+type Filter<T extends any[], F> = T extends [] ? [] :
+    T extends [infer Head, ...infer Tail] ?
+    Head extends F ? Filter<Tail, F> : [Head, ...Filter<Tail, F>] : /* --> */ [];
+    
+{
+    type Test1 = Filter<Arr, number>; // [string, ...number[]]
+    type Test2 = Filter<Arr, number[]>; // [number, string]
+
+    type Test3 = Filter<Arr, number | number[]>; // [string]
+    type Test4 = Filter<Arr, number | number[] | string>; // []
+    type Test5 = Filter<[number[]], number | number[] | string>; // []
+}
+```
+I hope you have noticed the --> symbol at the and of conditional type. It is mean, that if list has not neither Head nor Tail  - return empty array. I used empty array here instead of never, because we want to filter an array, not to get either Head or Tail
+
+Is it possible to reuse above pattern for other cases ? Sure! Take a look on this [question](https://stackoverflow.com/questions/65476787/how-to-dynamically-create-an-object-based-on-a-readonly-tuple-in-typescript/65478618#65478618)
+
+Let's say you have an array and you want to map it to other array. How to do it with type system?
+```typescript
+type Mapped<Arr extends Array<unknown>, Result extends Array<unknown> = []> =
+    Arr extends []
+    ? [] : Arr extends [infer H]
+    ? [...Result, [H, true]] : Arr extends [infer Head, ...infer Tail]
+    ? Mapped<[...Tail], [...Result, [Head, true]]> : Readonly<Result>
+
+type Result = Mapped<[1, 2, 3, 4]>; // [[1, true], [2, true], [3, true], [4, true]]
+```
+If you want to restrict maximum array (tuple) length  - this is not a problem. [Here](https://stackoverflow.com/questions/65495285/typescript-restrict-maximum-array-length) you can find how to do it
+```typescript
+type ArrayOfMaxLength4 = readonly [any?, any?, any?, any?];
+```
