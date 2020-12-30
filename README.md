@@ -69,3 +69,8 @@ interface HandleHttp {
     <T extends Endpoints.entitlements>(): HandleEntitlements;
 }
 ```
+As You see, HandleHttp is just overloading for function. Nothing special except the first line. I will come back to it later.
+We have class Api and overloadings for function. How we can combine them? Very simple - we will just create a function which returns instance of Api class
+```typescript
+const handleHttp: HandleHttp = <_ extends Endpoints>() => new Api();
+```
