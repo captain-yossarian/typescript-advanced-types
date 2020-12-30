@@ -12,6 +12,8 @@
 
 [6. Generate numbers in range](#6-generate-numbers-in-range---link)
 
+[8. Constraints are matter](#8-constraints-are-matter)
+
 ## 1.Generic class for API requests
 
 Let's assume that we have next allowed endpoints:
