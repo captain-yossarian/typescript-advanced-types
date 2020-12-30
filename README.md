@@ -10,6 +10,8 @@
 
 [5. Compare arguments](#5compare-arguments-in-typescript---link)
 
+[6. Generate numbers in range](#6-generate-numbers-in-range---link)
+
 ## 1.Generic class for API requests
 
 Let's assume that we have next allowed endpoints:
@@ -848,4 +850,19 @@ type From_1_to_99999 =
     | By<From_1_to_999
         | By<From_1_to_999>>
 ```
+
+## 8. Constraints are matter
+Please take a look on next example and answer a question: Is your generic is helpful?
+```typescript
+const makeGenericArray = <T>(arr: Array<T>) => arr;
+const colors = makeGenericArray(['red', 'green', 'blue']); //type string[] 
+const colors2 = makeGenericArray([1, 2, 3]); //type number[]If your answer is: Yes, but actually - no, we are on the same boat
+```
+TypeScript doing his best to narrow types and made them helpful. So if you are expect  T parameter to be either string or number, please provide extens 3 words:
+```typescript
+const makeStringArray = <T extends string|number>(arr: Array<T>) => arr;
+const colorsLiteral = makeStringArray(['red', 'green', 'blue']); // type ("red" | "green" | "blue")[]
+const colorsLiteral2 = makeStringArray([1,2,3]); // type ("red" | "green" | "blue")[]
+```
+Now, your types are more helpful. 
 
