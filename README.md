@@ -14,7 +14,7 @@
 
 [8. Constraints are matter](#8-constraints-are-matter)
 
-[9. Recursive types](#9-recursive-types)
+[9. Recursive types](#9-recursive-types---link1-link2)
 
 ## 1.Generic class for API requests
 
