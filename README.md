@@ -1,6 +1,8 @@
 # typescript-advanced-types
 
-## 1.Generic class for API requests
+[Help](##1.Generic class for API requests)
+
+##1.Generic class for API requests
 
 Let's assume that we have next allowed endpoints:
 
