@@ -18,6 +18,8 @@
 
 [10. Typeguards](#10-typeguards---link)
 
+[11. Handle tuples](#11-handle-tuples---link)
+
 ## 1.Generic class for API requests
 
 Let's assume that we have next allowed endpoints:
