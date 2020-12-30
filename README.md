@@ -2,7 +2,7 @@
 
 [Help](##1.Generic class for API requests)
 
-[Link](#id)
+[Link](#my-heading)
 
 ##1.Generic class for API requests
 
@@ -389,4 +389,4 @@ const result3 =
         render={(data: number) => 42}
     /> // expected error
 ```
-`#id`
+Me heading `#my-heading`
