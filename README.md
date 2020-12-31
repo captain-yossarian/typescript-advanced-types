@@ -20,6 +20,10 @@
 
 [11. Handle tuples](#11-handle-tuples---link)
 
+## II. Advanced data structures
+
+[1. Bit representation of object](#1-bit-representation-of-simple-object)
+
 ## 1.Generic class for API requests
 
 Let's assume that we have next allowed endpoints:
@@ -1297,7 +1301,7 @@ If you want to restrict maximum array (tuple) length - this is not a problem.
 type ArrayOfMaxLength4 = readonly [any?, any?, any?, any?];
 ```
 
-# II. Bit data structures
+# II. Advanced data structures
 
 ## 1. Bit representation of simple object
 
