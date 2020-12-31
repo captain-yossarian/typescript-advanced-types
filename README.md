@@ -1,4 +1,4 @@
-# typescript-advanced-types
+# I. TypeScript-advanced-types
 
 [1. Generic class for API requests](#1generic-class-for-api-requests---link)
 
@@ -1295,4 +1295,47 @@ If you want to restrict maximum array (tuple) length - this is not a problem.
 
 ```typescript
 type ArrayOfMaxLength4 = readonly [any?, any?, any?, any?];
+```
+
+# II. Bit data structures
+
+How to opack JS regular objects into bits?
+
+```typescript
+const obj = { top: true, category: 242, id: 123_456 }; // boolean and numbers, not strings
+```
+
+Constraints:
+`top` - can be either 1 or 0, flag - (T)
+`category` - can be from `0` to `999`, flag - (C)
+`id` - can be from `1` to `1_000_000`, flag - (I)
+
+Let's start with encoding.
+How many bits we should allocate for ID's?
+`1_000_000..toString(2).length` -> we should allocate 20 bits
+
+How many bits for category?
+`999..toString(2).length` -> 10
+
+And for top? - 1 bit, because it is a boolean
+
+TOP: 1
+CATEGORY: 10
+ID's: 20
+
+Result:
+T(1)-CCCCCCCCCC(10)-IIIIIIIIIIIIIIIIIIII(20)
+TCCCCCCCCCCIIIIIIIIIIIIIIIIIIII -> length 31
+
+```typescript
+const id_hex = (123_456).toString(16); // 1e240 // 11110001001000000
+const category_hex = (242).toString(16); // f2 // 11110010
+const top_hex = (1).toString(16); // 1
+const result = 0x1f21e240; // 1 - f2 - 1e240, binary representation 1 111100100 0011110001001000000
+```
+
+And decoder:
+
+```typescript
+const bits = (from, to, number) => ((1 << to) - 1) & (number >> (from - 1));
 ```
