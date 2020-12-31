@@ -1299,6 +1299,8 @@ type ArrayOfMaxLength4 = readonly [any?, any?, any?, any?];
 
 # II. Bit data structures
 
+## 1. Bit representation of simple object
+
 How to opack JS regular objects into bits?
 
 ```typescript
