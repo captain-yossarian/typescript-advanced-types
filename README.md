@@ -1313,24 +1313,32 @@ const obj = { top: true, category: 242, id: 123_456 }; // boolean and numbers, n
 
 Constraints:
 `top` - can be either 1 or 0, flag - (T)
+
 `category` - can be from `0` to `999`, flag - (C)
+
 `id` - can be from `1` to `1_000_000`, flag - (I)
 
 Let's start with encoding.
 How many bits we should allocate for ID's?
+
 `1_000_000..toString(2).length` -> we should allocate 20 bits
 
 How many bits for category?
+
 `999..toString(2).length` -> 10
 
 And for top? - 1 bit, because it is a boolean
 
 TOP: 1
+
 CATEGORY: 10
+
 ID's: 20
 
 Result:
+
 T(1)-CCCCCCCCCC(10)-IIIIIIIIIIIIIIIIIIII(20)
+
 TCCCCCCCCCCIIIIIIIIIIIIIIIIIIII -> length 31
 
 ```typescript
