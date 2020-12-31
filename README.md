@@ -1304,6 +1304,8 @@ type ArrayOfMaxLength4 = readonly [any?, any?, any?, any?];
 Ok, ok. I know what you are thinking about. How we can reduce the array to object? Is it possible at all with typings?
 Sure, you can take a look on this [answer](https://stackoverflow.com/questions/65517583/create-an-object-type-in-typescript-derived-from-another-objects-values-using-a/65522869#65522869)
 
+We should transform `Data` type to `ExpectedType` type
+
 ```typescript
 export const myArray = [
   { name: "Relationship", options: "foo" },
@@ -1311,7 +1313,9 @@ export const myArray = [
   { name: "Country family member lives in", options: "baz" },
 ] as const;
 
-export type ImmediateFamilyMembersListType = Array<{
+type Data = typeof myArray;
+
+type ExpectedType = Array<{
   Relationship: "foo";
   "Full name of family member as shown in passport": "bar";
   "Country family member lives in": "baz";
@@ -1344,7 +1348,7 @@ type Mapper<
     : never
   : never;
 
-type Result = Mapper<Data>;
+type Result = Mapper<Data>[] extends ExpectedType ? true : false;
 ```
 
 # II. Advanced data structures
