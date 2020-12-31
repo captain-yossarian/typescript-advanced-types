@@ -1301,6 +1301,52 @@ If you want to restrict maximum array (tuple) length - this is not a problem.
 type ArrayOfMaxLength4 = readonly [any?, any?, any?, any?];
 ```
 
+Ok, ok. I know what you are thinking about. How we can reduce the array to object? Is it possible at all with typings?
+Sure, you can take a look on this [answer](https://stackoverflow.com/questions/65517583/create-an-object-type-in-typescript-derived-from-another-objects-values-using-a/65522869#65522869)
+
+```typescript
+export const myArray = [
+  { name: "Relationship", options: "foo" },
+  { name: "Full name of family member as shown in passport", options: "bar" },
+  { name: "Country family member lives in", options: "baz" },
+] as const;
+
+export type ImmediateFamilyMembersListType = Array<{
+  Relationship: "foo";
+  "Full name of family member as shown in passport": "bar";
+  "Country family member lives in": "baz";
+}>;
+
+type Values<T> = T[keyof T];
+
+type Data = typeof myArray;
+
+type Elem = { readonly name: string; readonly options: string };
+
+type MapObject<T extends Elem, Key extends keyof T, Val extends keyof T> = {
+  [P in Values<Pick<T, Key>> & string]: T[Val];
+};
+
+type Mapper<
+  Arr extends ReadonlyArray<Elem>,
+  Result extends Record<string, any> = {}
+> = Arr extends []
+  ? Result
+  : Arr extends [infer H]
+  ? H extends Elem
+    ? Result & MapObject<H, "name", "options">
+    : never
+  : Arr extends readonly [infer H, ...infer Tail]
+  ? Tail extends ReadonlyArray<Elem>
+    ? H extends Elem
+      ? Mapper<Tail, Result & MapObject<H, "name", "options">>
+      : never
+    : never
+  : never;
+
+type Result = Mapper<Data>;
+```
+
 # II. Advanced data structures
 
 ## 1. Bit representation of simple object
