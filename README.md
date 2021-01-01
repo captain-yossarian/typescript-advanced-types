@@ -27,6 +27,7 @@
 ## III. Patterns
 
 [1. Type state pattern](#1-typestate-and-builder-patterns)
+[2. Publish subscribe pattern](#1-typestate-and-builder-patterns)
 
 ## 1.Generic class for API requests
 
@@ -1458,8 +1459,9 @@ This pattern was inspired by these 3 articles:
 
 The main goal here - is to make illegal states unrepresentable. This is always my first goal, when I'm trying to type smth.
 
-Same approach you can use with `Command` / `Publish-Subsrcibe` etc... patterns.
+## 2. Publish subscribe pattern
 
+Like I said in previous chapter, main goal - is to make illegal states unrepresentable.
 Please see next example. This pattern is your friend if you want to make event driven app (sockets, etc...)
 
 ```typescript
