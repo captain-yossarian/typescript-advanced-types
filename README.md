@@ -26,7 +26,7 @@
 
 ## III. Patterns
 
-[1. Type state pattern]
+[1. Type state pattern](#1-typestate-and-builder-patterns)
 
 ## 1.Generic class for API requests
 
