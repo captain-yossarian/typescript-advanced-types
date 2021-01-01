@@ -1457,3 +1457,60 @@ This pattern was inspired by these 3 articles:
 - [third SO answer](https://stackoverflow.com/questions/65431379/type-property-relying-on-return-type-of-another-property/65433418#65433418)
 
 The main goal here - is to make illegal states unrepresentable. This is always my first goal, when I'm trying to type smth.
+
+Same approach you can use with `Command` / `Publish-Subsrcibe` etc... patterns.
+
+Please see next example.
+
+```typescript
+const enum Events {
+  foo = "foo",
+  bar = "bar",
+  baz = "baz",
+}
+
+/**
+ * Single sourse of true
+ */
+interface EventMap {
+  [Events.foo]: { foo: number };
+  [Events.bar]: { bar: string };
+  [Events.baz]: { baz: string[] };
+}
+
+type Values<T> = T[keyof T];
+
+// All credits goes here : https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type/50375286#50375286
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never;
+
+type EmitRecord = {
+  [P in keyof EventMap]: (name: P, data: EventMap[P]) => void;
+};
+
+type ListenRecord = {
+  [P in keyof EventMap]: (
+    name: P,
+    callback: (arg: EventMap[P]) => void
+  ) => void;
+};
+
+type MakeOverloadings<T> = UnionToIntersection<Values<T>>;
+
+type Emit = MakeOverloadings<EmitRecord>;
+type Listen = MakeOverloadings<ListenRecord>;
+
+const emit: Emit = <T>(name: string, data: T) => {};
+
+emit(Events.bar, { bar: "1" });
+emit(Events.baz, { baz: ["1"] });
+emit("unimplemented", { foo: 2 }); // expected error
+
+const listen: Listen = (name: string, callback: (arg: any) => void) => {};
+
+listen(Events.baz, (arg /* { baz: string[] } */) => {});
+listen(Events.bar, (arg /* { bar: string } */) => {});
+```
