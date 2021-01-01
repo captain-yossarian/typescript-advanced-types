@@ -1460,7 +1460,7 @@ The main goal here - is to make illegal states unrepresentable. This is always m
 
 Same approach you can use with `Command` / `Publish-Subsrcibe` etc... patterns.
 
-Please see next example.
+Please see next example. This pattern is your friend if you want to make event driven app (sockets, etc...)
 
 ```typescript
 const enum Events {
