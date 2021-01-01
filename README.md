@@ -27,7 +27,7 @@
 ## III. Patterns
 
 [1. Type state pattern](#1-typestate-and-builder-patterns)
-[2. Publish subscribe pattern](#1-typestate-and-builder-patterns)
+[2. Publish subscribe pattern](#2-publish-subscribe-pattern)
 
 ## 1.Generic class for API requests
 
@@ -1482,7 +1482,8 @@ interface EventMap {
 
 type Values<T> = T[keyof T];
 
-// All credits goes here : https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type/50375286#50375286
+// All credits goes here :
+// https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type/50375286#50375286
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
   k: infer I
 ) => void
