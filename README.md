@@ -24,6 +24,10 @@
 
 [1. Bit representation of object](#1-bit-representation-of-simple-object)
 
+## III. Patterns
+
+[1. Type state pattern]
+
 ## 1.Generic class for API requests
 
 Let's assume that we have next allowed endpoints:
@@ -1403,3 +1407,53 @@ And decoder:
 ```typescript
 const bits = (from, to, number) => ((1 << to) - 1) & (number >> (from - 1));
 ```
+
+# III. Patterns
+
+## 1. TypeState and Builder patterns
+
+```typescript
+interface Active {
+  active: true;
+  disable(): Disabled;
+}
+
+interface Disabled {
+  active: false;
+  activate(): Active;
+}
+
+class ConnectionActive<T> implements Active {
+  active: true;
+  data: T;
+  constructor(data: T) {
+    this.data = data;
+  }
+
+  disable = () => new ConnectionDisabled<T>(this.data);
+}
+
+class ConnectionDisabled<T> implements Disabled {
+  active: false;
+  data: T;
+  constructor(data: T) {
+    this.data = data;
+  }
+
+  activate = () => new ConnectionActive<T>(this.data);
+}
+
+const socket = { foo: 42 };
+
+const result = new ConnectionDisabled(socket);
+```
+
+You are able to call only `activate` methods when connection is disabled and `disable` when connection is enabled.
+
+This pattern was inspired by these 3 articles:
+
+- [first article](https://docs.google.com/presentation/d/1po3-zRQCp8m8cwg-CF5dUL_6RPe9gIaKIT5P_DNbGE8/edit#slide=id.g6baf2c25cf_0_33)
+- [second article](http://cliffle.com/blog/rust-typestate/)
+- [third SO answer](https://stackoverflow.com/questions/65431379/type-property-relying-on-return-type-of-another-property/65433418#65433418)
+
+The main goal here - is to make illegal states unrepresentable. This is always my first goal, when I'm trying to type smth.
