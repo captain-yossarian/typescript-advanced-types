@@ -20,7 +20,7 @@
 
 [11. Handle tuples](#11-handle-tuples---link)
 
-[12. Transform union to array]()
+[12. Transform union to array](#12-transform-union-to-array---link)
 
 ## II. Advanced data structures
 
