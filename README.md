@@ -1418,6 +1418,8 @@ const func = <T>(): UnionToArray<keyof T> => null as any;
 const result = func<Person>(); // ["name", "age", "surname", "children"]
 ```
 
+Please keep in mind, this solution is not CPU friendly and there is no order guarantee.
+
 # II. Advanced data structures
 
 ## 1. Bit representation of simple object
