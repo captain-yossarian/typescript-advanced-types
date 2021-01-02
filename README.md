@@ -20,6 +20,8 @@
 
 [11. Handle tuples](#11-handle-tuples---link)
 
+[12. Transform union to array]()
+
 ## II. Advanced data structures
 
 [1. Bit representation of object](#1-bit-representation-of-simple-object)
@@ -1355,6 +1357,65 @@ type Mapper<
   : never;
 
 type Result = Mapper<Data>[] extends ExpectedType ? true : false;
+```
+
+## 12. Transform union to array - [link](https://stackoverflow.com/questions/65533827/get-keys-of-an-interface-in-generics/65534971#65534971)
+
+Let's say you have a `Union`, and you want to convert it to `ExpectedArray`
+
+```typescript
+type Union = "one" | "two" | "three";
+
+type ExpectedArray = ["one", "two", "three"];
+```
+
+There is a naive way to do it:
+
+```typescript
+type Result = Union[]; // ('one' | 'two' | 'three')[]
+
+type Test1 = Union extends ["one", "one", "one"] ? true : false; // true
+```
+
+As you see, it is not what we are looking for.
+
+```typescript
+//Credits goes to https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type/50375286#50375286
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never;
+
+// Credits goes to ShanonJackson https://github.com/microsoft/TypeScript/issues/13298#issuecomment-468114901
+// Converts union to overloaded function
+type UnionToOvlds<U> = UnionToIntersection<
+  U extends any ? (f: U) => void : never
+>;
+
+// Credits goes to ShanonJackson https://github.com/microsoft/TypeScript/issues/13298#issuecomment-468114901
+type PopUnion<U> = UnionToOvlds<U> extends (a: infer A) => void ? A : never;
+
+// Credit goes to Titian Cernicova-Dragomir  https://stackoverflow.com/questions/53953814/typescript-check-if-a-type-is-a-union#comment-94748994
+type IsUnion<T> = [T] extends [UnionToIntersection<T>] ? false : true;
+
+// Finally me)
+type UnionToArray<T, A extends unknown[] = []> = IsUnion<T> extends true
+  ? UnionToArray<Exclude<T, PopUnion<T>>, [PopUnion<T>, ...A]>
+  : [T, ...A];
+
+interface Person {
+  name: string;
+  age: number;
+  surname: string;
+  children: number;
+}
+
+type Result = UnionToArray<keyof Person>; // ["name", "age", "surname", "children"]
+
+const func = <T>(): UnionToArray<keyof T> => null as any;
+
+const result = func<Person>(); // ["name", "age", "surname", "children"]
 ```
 
 # II. Advanced data structures
