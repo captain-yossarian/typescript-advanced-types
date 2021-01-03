@@ -22,6 +22,8 @@
 
 [12. Transform union to array](#12-transform-union-to-array---link)
 
+[13. Make callback chain]
+
 ## II. Advanced data structures
 
 [1. Bit representation of object](#1-bit-representation-of-simple-object)
@@ -1419,6 +1421,57 @@ const result = func<Person>(); // ["name", "age", "surname", "children"]
 ```
 
 Please keep in mind, this solution is not CPU friendly and there is no order guarantee.
+
+## 13. Make callback chain - [link](https://stackoverflow.com/questions/65540887/typescript-type-can-not-be-inferred-if-function-parameter-is-used/65543597#65543597)
+
+Let's say you have next function
+
+```typescript
+const myFn = <T>(arg: { a: (a_arg: number) => T; b: (b_arg: T) => void }) => {
+  // ...
+};
+```
+
+It is simple. The argument of `b` function should be return value of `a` function.
+
+Let's try if it works:
+
+```typescript
+myFn({
+  a: (i) => ({ num: 0 }),
+  b: (b_arg) => {
+    b_arg.num;
+  }, // Error
+});
+```
+
+But why we have an error here?
+
+Honestly - I don't understand it so good to be able explain it.
+
+I suggest you to read next articles to understand this error, maybe it even helps you.
+
+- [Type system](https://en.wikipedia.org/wiki/Type_system#:~:text=In%20programming%20languages%2C%20a%20type,%2C%20expressions%2C%20functions%20or%20modules.)
+- [Covariance and contravariance](<https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)>)
+- [Type compatibility](https://basarat.gitbook.io/typescript/type-system/type-compatibility)
+
+You should add an extra generic for `b` function.
+
+```typescript
+const myFn = <T>(arg: {
+  a: (a_arg: number) => T;
+  b: <U extends T>(b_arg: U) => void;
+}) => {
+  // ...
+};
+
+myFn({
+  a: (a) => ({ num: 0 }),
+  b: (b_arg) => {
+    b_arg.num;
+  }, // Works!
+});
+```
 
 # II. Advanced data structures
 
