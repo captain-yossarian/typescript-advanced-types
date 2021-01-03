@@ -22,7 +22,7 @@
 
 [12. Transform union to array](#12-transform-union-to-array---link)
 
-[13. Make callback chain]
+[13. Make callback chain](#13-make-callback-chain---link)
 
 ## II. Advanced data structures
 
