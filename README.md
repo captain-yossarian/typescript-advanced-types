@@ -1455,6 +1455,8 @@ I suggest you to read next articles to understand this error, maybe it even help
 - [Covariance and contravariance](<https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)>)
 - [Type compatibility](https://basarat.gitbook.io/typescript/type-system/type-compatibility)
 
+My SO [question](https://stackoverflow.com/questions/65550146/how-typescript-infers-callbacks-arguments-type)
+
 You should add an extra generic for `b` function.
 
 ```typescript
