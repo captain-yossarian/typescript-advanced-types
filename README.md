@@ -1422,6 +1422,28 @@ const result = func<Person>(); // ["name", "age", "surname", "children"]
 
 Please keep in mind, this solution is not CPU friendly and there is no order guarantee.
 
+Above solution has own drawback - there is only one order.
+
+Next solution, which is shamelessly stolen from [Wroclaw twitter group](https://twitter.com/WrocTypeScript/status/1306296710407352321)
+works much better and easier to understand
+
+```typescript
+type TupleUnion<U extends string, R extends any[] = []> = {
+  [S in U]: Exclude<U, S> extends never
+    ? [...R, S]
+    : TupleUnion<Exclude<U, S>, [...R, S]>;
+}[U];
+
+interface Person {
+  firstName: string;
+  lastName: string;
+  dob: Date;
+  hasCats: false;
+}
+
+type keys = TupleUnion<keyof Person>; //
+```
+
 ## 13. Make callback chain - [link](https://stackoverflow.com/questions/65540887/typescript-type-can-not-be-inferred-if-function-parameter-is-used/65543597#65543597)
 
 Let's say you have next function
