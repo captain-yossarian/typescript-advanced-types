@@ -1381,6 +1381,8 @@ type Test1 = Union extends ["one", "one", "one"] ? true : false; // true
 
 As you see, it is not what we are looking for.
 
+Next example is hard to understand, but you may learn smth new.
+
 ```typescript
 //Credits goes to https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type/50375286#50375286
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
