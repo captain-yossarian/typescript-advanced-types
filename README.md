@@ -1093,6 +1093,28 @@ type From_1_to_99999 =
   | By<From_1_to_999 | By<From_1_to_999>>;
 ```
 
+If you still want to generate literal numbers instead of string numbers, you can use this code:
+
+```typescript
+type PrependNextNum<A extends Array<unknown>> = A["length"] extends infer T
+  ? ((t: T, ...a: A) => void) extends (...x: infer X) => void
+    ? X
+    : never
+  : never;
+
+type EnumerateInternal<A extends Array<unknown>, N extends number> = {
+  0: A;
+  1: EnumerateInternal<PrependNextNum<A>, N>;
+}[N extends A["length"] ? 0 : 1];
+
+type Enumerate<N extends number> = EnumerateInternal<[], N> extends (infer E)[]
+  ? E
+  : never;
+
+// Up to 42 - meaning of the life
+type Result = Enumerate<43>; // 0 | 1 | 2 | ... | 42
+```
+
 ## 8. Constraints are matter
 
 Please take a look on next example and answer a question: `Is your generic is helpful?`
