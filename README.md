@@ -1278,6 +1278,18 @@ type Tail<List extends ReadonlyArray<unknown>> = List extends readonly [
   type Test2 = Assert<Tail<["head", "tail"]>, ["tail"]>;
   type Test3 = Assert<Head<[]>, never>;
 }
+
+// Before TS 4
+type Tail_before_TS_4<T extends any[]> = ((...args: T) => void) extends (
+  first: any,
+  ...rest: infer S1
+) => void
+  ? S1
+  : T extends [infer S2]
+  ? []
+  : T extends []
+  ? []
+  : never;
 ```
 
 Very straightforward.
